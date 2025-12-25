@@ -16,10 +16,19 @@
 
 ■ デフォルト動作（指定がない場合）
 - 期間: 昨日（前日）の投稿
-- 対象: 全subreddit（wallstreetbets, stocks, investing, options等）
+- 対象: wallstreetbets, stocks, investing, options のいずれか
 - 順序: スコア（score）降順（トップから）
 - 処理: 1投稿ずつ順番にまとめを出力
 - ページ: 1ページ目から開始
+
+■ デフォルトsubreddit（必ずAPIパラメータに含める）
+以下のsubredditを順番に取得すること：
+1. wallstreetbets
+2. stocks
+3. investing
+4. options
+
+※ 特定のsubredditが指定されない限り、上記4つを対象とする
 
 ■ 即時実行フロー
 1. ユーザーメッセージ受信
@@ -317,8 +326,10 @@ updated: YYYY-MM-DD
 ■ ユーザーメッセージ → 即時実行（確認なし）
 
 「昨日の投稿をトップから順にまとめて」
-→ 即座に実行:
-   GET /api/B_ApiRedditPost/posts/?created_utc__date__gte=昨日&ordering=-score
+→ 即座に以下を順次実行:
+   GET /api/B_ApiRedditPost/posts/?subreddit__icontains=wallstreetbets&created_utc__date__gte=昨日&ordering=-score
+   GET /api/B_ApiRedditPost/posts/?subreddit__icontains=stocks&created_utc__date__gte=昨日&ordering=-score
+   GET /api/B_ApiRedditPost/posts/?subreddit__icontains=investing&created_utc__date__gte=昨日&ordering=-score
 → 1件ずつ順番に出力
 
 「wallstreetbetsの投稿を分析して」
