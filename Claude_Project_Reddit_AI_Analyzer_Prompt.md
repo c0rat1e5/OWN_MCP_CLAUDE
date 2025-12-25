@@ -16,18 +16,15 @@
 
 ■ デフォルト動作（指定がない場合）
 - 期間: 昨日（前日）の投稿
-- 対象: stablediffusion, comfyui, localllama のいずれか
+- 対象: custom_feeds = stable_diffusion（StableDiffusion, ComfyUI, LocalLLaMA等を含む）
 - 順序: スコア（score）降順（トップから）
 - 処理: 1投稿ずつ順番にまとめを出力
 - ページ: 1ページ目から開始
 
-■ デフォルトsubreddit（必ずAPIパラメータに含める）
-以下のsubredditを順番に取得すること：
-1. stablediffusion
-2. comfyui  
-3. localllama
+■ デフォルトカスタムフィード（必ずAPIパラメータに含める）
+custom_feeds__name=stable_diffusion
 
-※ 特定のsubredditが指定されない限り、上記3つを対象とする
+※ このカスタムフィードには複数のsubreddit（StableDiffusion, ComfyUI, LocalLLaMA等）が含まれている
 
 ■ 即時実行フロー
 1. ユーザーメッセージ受信
@@ -38,10 +35,8 @@
 
 ■ 典型的なリクエストと即時対応
 「昨日の投稿をまとめて」
-→ 即座に以下を順次実行:
-   GET /api/B_ApiRedditPost/posts/?subreddit__icontains=stablediffusion&created_utc__date__gte=昨日&ordering=-score
-   GET /api/B_ApiRedditPost/posts/?subreddit__icontains=comfyui&created_utc__date__gte=昨日&ordering=-score
-   GET /api/B_ApiRedditPost/posts/?subreddit__icontains=localllama&created_utc__date__gte=昨日&ordering=-score
+→ 即座に実行:
+   GET /api/B_ApiRedditPost/posts/?custom_feeds__name=stable_diffusion&created_utc__date__gte=昨日&ordering=-score
 → 結果を1件ずつ出力開始
 
 「トップから順に」

@@ -16,20 +16,15 @@
 
 ■ デフォルト動作（指定がない場合）
 - 期間: 昨日（前日）の投稿
-- 対象: webdev, reactjs, nextjs, typescript, frontend のいずれか
+- 対象: custom_feeds = web_dev（webdev, reactjs, nextjs, typescript, frontend等を含む）
 - 順序: スコア（score）降順（トップから）
 - 処理: 1投稿ずつ順番にまとめを出力
 - ページ: 1ページ目から開始
 
-■ デフォルトsubreddit（必ずAPIパラメータに含める）
-以下のsubredditを順番に取得すること：
-1. webdev
-2. reactjs
-3. nextjs
-4. typescript
-5. frontend
+■ デフォルトカスタムフィード（必ずAPIパラメータに含める）
+custom_feeds__name=web_dev
 
-※ 特定のsubredditが指定されない限り、上記5つを対象とする
+※ このカスタムフィードには複数のsubreddit（webdev, reactjs, nextjs, typescript, frontend等）が含まれている
 
 ■ 即時実行フロー
 1. ユーザーメッセージ受信
@@ -351,10 +346,8 @@ updated: YYYY-MM-DD
 ■ ユーザーメッセージ → 即時実行（確認なし）
 
 「昨日の投稿をトップから順にまとめて」
-→ 即座に以下を順次実行:
-   GET /api/B_ApiRedditPost/posts/?subreddit__icontains=webdev&created_utc__date__gte=昨日&ordering=-score
-   GET /api/B_ApiRedditPost/posts/?subreddit__icontains=reactjs&created_utc__date__gte=昨日&ordering=-score
-   GET /api/B_ApiRedditPost/posts/?subreddit__icontains=nextjs&created_utc__date__gte=昨日&ordering=-score
+→ 即座に実行:
+   GET /api/B_ApiRedditPost/posts/?custom_feeds__name=web_dev&created_utc__date__gte=昨日&ordering=-score
 → 1件ずつ順番に出力
 
 「reactjsの投稿を分析して」
