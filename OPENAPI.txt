@@ -1,0 +1,211 @@
+openapi: 3.1.1
+info:
+  title: Sample API TITLE
+  version: 1.0.0
+  description: Login is required to access token after login.         (need copy and
+    paste the token to the jwtAuth of Authorize button.)
+paths:
+  /api/B_ApiRedditPost/favorites/:
+    get:
+      operationId: B_ApiRedditPost_favorites_list
+      parameters:
+      - in: query
+        name: created_utc__date__gte
+        schema:
+          type: string
+          format: date
+      - in: query
+        name: created_utc__date__lte
+        schema:
+          type: string
+          format: date
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: subreddit__icontains
+        schema:
+          type: string
+      tags:
+      - B_ApiRedditPost
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedReadApiRedditPostList'
+          description: ''
+  /api/B_ApiRedditPost/posts/:
+    get:
+      operationId: B_ApiRedditPost_posts_list
+      parameters:
+      - in: query
+        name: created_utc__date__gte
+        schema:
+          type: string
+          format: date
+      - in: query
+        name: created_utc__date__lte
+        schema:
+          type: string
+          format: date
+      - in: query
+        name: custom_feeds__name
+        schema:
+          type: string
+      - in: query
+        name: custom_feeds__name__icontains
+        schema:
+          type: string
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: subreddit__icontains
+        schema:
+          type: string
+      tags:
+      - B_ApiRedditPost
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedReadApiRedditPostList'
+          description: ''
+components:
+  schemas:
+    PaginatedReadApiRedditPostList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReadApiRedditPost'
+    ReadApiRedditComment:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        body:
+          type: string
+          readOnly: true
+        score:
+          type: integer
+          readOnly: true
+      required:
+      - body
+      - id
+      - score
+    ReadApiRedditPost:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        permalink:
+          type: string
+          format: uri
+          readOnly: true
+        subreddit:
+          type: string
+          readOnly: true
+        title:
+          type: string
+          readOnly: true
+        selftext:
+          type: string
+          readOnly: true
+          nullable: true
+        score:
+          type: integer
+          readOnly: true
+        upvote_ratio:
+          type: number
+          format: double
+          readOnly: true
+        num_comments:
+          type: integer
+          readOnly: true
+        over_18:
+          type: boolean
+          readOnly: true
+        is_self:
+          type: boolean
+          readOnly: true
+        created_utc:
+          type: string
+          format: date-time
+          readOnly: true
+        comments:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReadApiRedditComment'
+          readOnly: true
+      required:
+      - comments
+      - created_utc
+      - id
+      - is_self
+      - num_comments
+      - over_18
+      - permalink
+      - score
+      - selftext
+      - subreddit
+      - title
+      - upvote_ratio
+servers:
+- url: https://mainweb-production.up.railway.app
+  description: Production server
+
